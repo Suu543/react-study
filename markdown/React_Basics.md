@@ -1,0 +1,897 @@
+# React Basics Tutorial
+
+## First Component
+```javascript
+// index.js
+import React from "react";
+import ReactDom from "react-dom";
+
+function Greeting() {
+  return <article></article>;
+}
+
+// <Greeting /> or <Greeting></Greeting>
+ReactDom.render(<Greeting />, document.getElementById("root"));
+```
+
+## Text Editor Setup
+- Prettier
+- ES7 React
+```json
+{
+    "editor.fontSize": 26,
+    "files.autoSave": "off",
+    "editor.tabSize": 1,
+    "editor.wordWrap": "on",
+    "terminal.integrated.fontSize": 26,
+    "emmet.includeLanguages": {
+        "javascript": "javascriptreact"
+    },
+    "editor.minimap.enabled": false,
+    "prettier.jsxSingleQuote": true,
+    "prettier.semi": false,
+    "prettier.singleQuote": true,
+    "javascript.updateImportsOnFileMove.enabled": "always",
+    "editor.formatOnPaste": true,
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "[javascript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "editor.cursorBlinking": "expand",
+    "window.zoomLevel": 2
+}
+```
+
+## First Component in Detail
+- 주목할 점은 render 함수에 생성한 컴포넌트를 전달할 때 이것이 jsx 파일로 인식된다.
+```javascript
+import React from "react";
+import ReactDom from "react-dom";
+
+// stateless functional component
+// always return jsx (something)
+
+function Greeting() {
+  return (
+    <div>
+      <h4>This is First React Component</h4>
+    </div>
+  );
+}
+
+// const Testing = () => {
+//   // tag, props, content
+//   return React.createElement('h1', {}, 'Hello World')
+// }
+
+const NestedTesting = () => {
+  return React.createElement(
+    "div",
+    {},
+    React.createElement("h1", {}, "hello world")
+  );
+};
+
+// <Greeting /> or <Greeting></Greeting>
+ReactDom.render(<Greeting />, document.getElementById("root"));
+```
+
+## JSX Rules
+
+- return single element
+- div / secction / article or Fragment
+- use camelCase for html attribute
+- className instead of class
+- close every element
+- formatting
+
+<br />
+- 아래와 같이 두 개의 div / section / article or Fragment가 존재하는 경우 오류가 발생한다.
+- JSX는 반드시 하나의 요소를 리턴해야 하기 때문이다.
+- Parsing error: Adjacent JSX elements must be wrapped in an enclosing tag. Did you want a JSX Fragment <>...</>?
+  
+```javascript
+import React from "react";
+import ReactDom from "react-dom";
+
+function Greeting() {
+  return (
+    <div>
+      <h1>Hello World</h1>
+      <ul>
+        <li>
+          <a href="#">Hello World</a>
+        </li>
+      </ul>
+    </div>
+    <div></div>
+  );
+}
+
+ReactDom.render(<Greeting />, document.getElementById("root"));
+```
+
+위 문제를 해결하기 위해서는 single element로 감싸줘야 한다.
+```javascript
+import React from "react";
+import ReactDom from "react-dom";
+
+// <React.Fragment></React.Fragment> or <></>
+function Greeting() {
+  return (
+    <React.Fragment>
+        <div className="">
+            <h1>Hello World</h1>
+            <ul>
+                <li>
+                    <a href="#">Hello World</a>
+                </li>
+                <img src="" alt="Hello World" />
+                <input type="text" name="" id="" />
+            </ul>
+        </div>
+    </React.Fragment>
+  );
+}
+
+ReactDom.render(<Greeting />, document.getElementById("root"));
+```
+
+## Nested Components and Tools
+React DevTools 확인해보기
+```javascript
+import React from "react";
+import ReactDom from "react-dom";
+
+// Nested Components, React Tools
+
+// function Greeting() {
+//   return (
+//     <div>
+//       <h2>John Doe</h2>
+//       <p>This is my message</p>
+//     </div>
+//   );
+// }
+
+function Greeting() {
+  return (
+    <div>
+      <Person />
+      <Message />
+    </div>
+  );
+}
+
+const Person = () => <h2>John Doe</h2>;
+const Message = () => <p>This is my message</p>;
+
+ReactDom.render(<Greeting />, document.getElementById("root"));
+```
+
+## Mini Book Project
+```javascript
+import React from "react";
+import ReactDom from "react-dom";
+
+function BookList() {
+  return (
+    <section>
+      <Book />
+      <Book />
+      <Book />
+      <Book />
+      <Book />
+      <Book />
+      <Book />
+      <Book />
+    </section>
+  );
+}
+
+const Book = () => {
+  return (
+    <article>
+      <Image />
+      <Title />
+      <Author />
+    </article>
+  );
+};
+const Image = () => (
+  <img
+    src="https://images-na.ssl-images-amazon.com/images/I/51SCYAQgu5L._SX315_BO1,204,203,200_.jpg"
+    alt="Test"
+  />
+);
+const Title = () => <h1>I Love You to the Moon and Back</h1>;
+const Author = () => <h4>Hello World</h4>;
+
+ReactDom.render(<BookList />, document.getElementById("root"));
+```
+
+## CSS
+```javascript
+import React from "react";
+import ReactDom from "react-dom";
+
+// css - src/index.css
+import "./index.css";
+
+function BookList() {
+  return (
+    <section className="booklist">
+      <Book />
+      <Book />
+      <Book />
+      <Book />
+      <Book />
+      <Book />
+      <Book />
+      <Book />
+    </section>
+  );
+}
+
+const Book = () => {
+  return (
+    <article className="book">
+      <Image />
+      <Title />
+      <Author />
+    </article>
+  );
+};
+
+const Image = () => (
+  <img
+    src="https://images-na.ssl-images-amazon.com/images/I/51SCYAQgu5L._SX315_BO1,204,203,200_.jpg"
+    alt="Test"
+  />
+);
+
+const Title = () => <h1>I Love You to the Moon and Back</h1>;
+
+const Author = () => <h4>Hello World</h4>;
+
+ReactDom.render(<BookList />, document.getElementById("root"));
+```
+
+## JSX - css
+- inline-style 방식이 우선순위가 더 높다는 것을 명심하자.
+```javascript
+import React from "react";
+import ReactDom from "react-dom";
+
+// css
+import "./index.css";
+
+function BookList() {
+  return (
+    <section className="booklist">
+      <Book />
+      <Book />
+      <Book />
+      <Book />
+      <Book />
+      <Book />
+      <Book />
+      <Book />
+    </section>
+  );
+}
+
+const Book = () => {
+  return (
+    <article className="book">
+      <Image />
+      <Title />
+      <Author />
+    </article>
+  );
+};
+
+const Image = () => (
+  <img
+    src="https://images-na.ssl-images-amazon.com/images/I/51SCYAQgu5L._SX315_BO1,204,203,200_.jpg"
+    alt="Test"
+  />
+);
+
+const Title = () => <h1>I Love You to the Moon and Back</h1>;
+
+const Author = () => (
+  <h4 style={{ color: "#617d98", fontSize: "0.75rem", marginTop: "0.25rem" }}>
+    Hello World
+  </h4>
+);
+
+ReactDom.render(<BookList />, document.getElementById("root"));
+```
+
+## JSX - JavaScript
+```javascript
+import React from "react";
+import ReactDom from "react-dom";
+
+// css
+import "./index.css";
+
+function BookList() {
+  return (
+    <section className="booklist">
+      <Book />
+    </section>
+  );
+}
+
+const author = "Hello World";
+
+const Book = () => {
+  const title = "I Love You to the Moon and Back";
+
+  return (
+    <article className="book">
+      <img
+        src="https://images-na.ssl-images-amazon.com/images/I/51SCYAQgu5L._SX315_BO1,204,203,200_.jpg"
+        alt="Test"
+      />
+      <h1>{title}</h1>
+      <h4>{author.toUpperCase()}</h4>
+      <p>{6 + 6}</p>
+    </article>
+  );
+};
+
+ReactDom.render(<BookList />, document.getElementById("root"));
+```
+
+## Props
+```javascript
+// Version #1
+import React from "react";
+import ReactDom from "react-dom";
+import "./index.css";
+
+function BookList() {
+  return (
+    <section className="booklist">
+      <Book job="developer" />
+      <Book job="" title="random title" number={22} />
+    </section>
+  );
+}
+
+const author = "Hello World";
+const title = "I Love You to the Moon and Back";
+const img =
+  "https://images-na.ssl-images-amazon.com/images/I/51SCYAQgu5L._SX315_BO1,204,203,200_.jpg";
+
+const Book = (props) => {
+  console.log(props);
+
+  return (
+    <article className="book">
+      <img src={img} alt="" />
+      <h1>{title}</h1>
+      <h4>{author}</h4>
+      <p>{console.log(props)}</p>
+      <p>{props.job}</p>
+      <p>{props.title}</p>
+    </article>
+  );
+};
+
+ReactDom.render(<BookList />, document.getElementById("root"));
+```
+
+```javascript
+// version #2
+import React from "react";
+import ReactDom from "react-dom";
+import "./index.css";
+
+const firstBook = {
+  img: "https://images-na.ssl-images-amazon.com/images/I/51SCYAQgu5L._SX315_BO1,204,203,200_.jpg",
+  title: "I Love You to the Moon and Back",
+  author: "Hello WOrld",
+};
+
+const secondBook = {
+  img: "https://images-na.ssl-images-amazon.com/images/I/51SCYAQgu5L._SX315_BO1,204,203,200_.jpg",
+  title: "I Love You to the Moon and Back",
+  author: "Hello WOrld",
+};
+
+function BookList() {
+  return (
+    <section className="booklist">
+      <Book
+        img={firstBook.img}
+        title={firstBook.title}
+        author={firstBook.author}
+      />
+      <Book
+        img={secondBook.img}
+        title={secondBook.title}
+        author={secondBook.author}
+      />
+    </section>
+  );
+}
+
+const Book = (props) => {
+  console.log(props);
+
+  return (
+    <article className="book">
+      <img src={props.img} alt="" />
+      <h1>{props.title}</h1>
+      <h4>{props.author}</h4>
+    </article>
+  );
+};
+
+ReactDom.render(<BookList />, document.getElementById("root"));
+```
+
+## Props - Destructuring
+
+```javascript
+// Version #1
+const Book = (props) => {
+  const { img, title, author } = props;
+
+  return (
+    <article className="book">
+      <img src={img} alt="" />
+      <h1>{title}</h1>
+      <h4>{author}</h4>
+    </article>
+  );
+}
+
+// Version #2
+const Book = ({ img, title, author }) => {
+
+  return (
+    <article className="book">
+      <img src={img} alt="" />
+      <h1>{title}</h1>
+      <h4>{author}</h4>
+    </article>
+  );
+};
+```
+
+## Props - Children
+
+```javascript
+import React from "react";
+import ReactDom from "react-dom";
+import "./index.css";
+
+const firstBook = {
+  img: "https://images-na.ssl-images-amazon.com/images/I/51SCYAQgu5L._SX315_BO1,204,203,200_.jpg",
+  title: "I Love You to the Moon and Back",
+  author: "Hello WOrld",
+};
+
+const secondBook = {
+  img: "https://images-na.ssl-images-amazon.com/images/I/51SCYAQgu5L._SX315_BO1,204,203,200_.jpg",
+  title: "I Love You to the Moon and Back",
+  author: "Hello WOrld",
+};
+
+function BookList() {
+  return (
+    <section className="booklist">
+      <Book
+        img={firstBook.img}
+        title={firstBook.title}
+        author={firstBook.author}
+      >
+        <p>
+          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Impedit
+          eligendi voluptatibus molestiae, sed id culpa atque possimus, earum
+          ipsa aut provident dicta placeat pariatur quod odit qui maiores,
+          fugiat assumenda!
+        </p>
+      </Book>
+      <Book
+        img={secondBook.img}
+        title={secondBook.title}
+        author={secondBook.author}
+      />
+    </section>
+  );
+}
+
+const Book = ({ img, title, author, children }) => {
+  return (
+    <article className="book">
+      {children}
+      <img src={img} alt="" />
+      <h1>{title}</h1>
+      <h4>{author}</h4>
+      {children}
+    </article>
+  );
+};
+
+ReactDom.render(<BookList />, document.getElementById("root"));
+```
+
+## Simple List
+
+```javascript
+import React from "react";
+import ReactDom from "react-dom";
+
+import "./index.css";
+
+const books = [
+  {
+    img: "https://images-na.ssl-images-amazon.com/images/I/51SCYAQgu5L._SX315_BO1,204,203,200_.jpg",
+    title: "I Love You to the Moon and Back",
+    author: "Hello WOrld",
+  },
+  {
+    img: "https://images-na.ssl-images-amazon.com/images/I/51SCYAQgu5L._SX315_BO1,204,203,200_.jpg",
+    title: "I Love You to the Moon and Back",
+    author: "Hello WOrld",
+  },
+];
+
+const names = ["john", "peter", "susan"];
+const newNames = names.map((name) => {
+  return <h1>{name}</h1>;
+});
+
+function BookList() {
+  return <section className="booklist">{newNames}</section>;
+}
+
+const Book = ({ img, title, author, children }) => {
+  // const { img, title, author, children } = props;
+
+  return (
+    <article className="book">
+      {children}
+      <img src={img} alt="" />
+      <h1>{title}</h1>
+      <h4>{author}</h4>
+      {children}
+    </article>
+  );
+};
+
+ReactDom.render(<BookList />, document.getElementById("root"));
+```
+
+## Proper List
+```javascript
+// Version #1
+function BookList() {
+  return (
+    <section className="booklist">
+      {books.map((book) => {
+        const { img, title, author } = book;
+        return (
+          <div>
+            <h3>{title}</h3>
+            <h6>{author}</h6>
+          </div>
+        );
+      })}
+    </section>
+  );
+```
+
+```javascript
+// Version #2
+import React from "react";
+import ReactDom from "react-dom";
+
+import "./index.css";
+
+const books = [
+  {
+    img: "https://images-na.ssl-images-amazon.com/images/I/51SCYAQgu5L._SX315_BO1,204,203,200_.jpg",
+    title: "I Love You to the Moon and Back",
+    author: "Hello WOrld",
+  },
+  {
+    img: "https://images-na.ssl-images-amazon.com/images/I/51SCYAQgu5L._SX315_BO1,204,203,200_.jpg",
+    title: "I Love You to the Moon and Back",
+    author: "Hello WOrld",
+  },
+  {
+    img: "https://images-na.ssl-images-amazon.com/images/I/51SCYAQgu5L._SX315_BO1,204,203,200_.jpg",
+    title: "I Love You to the Moon and Back",
+    author: "Hello WOrld",
+  },
+];
+
+function BookList() {
+  return (
+    <section className="booklist">
+      {books.map((book) => {
+        return <Book book={book}></Book>;
+      })}
+    </section>
+  );
+}
+
+const Book = (props) => {
+  const { img, title, author } = props.book;
+
+  return (
+    <article className="book">
+      <img src={img} alt="" />
+      <h1>{title}</h1>
+      <h4>{author}</h4>
+    </article>
+  );
+};
+
+ReactDom.render(<BookList />, document.getElementById("root"));
+```
+
+## Key Prop and Spread Operator
+
+- Key Prop
+```javascript
+import React from "react";
+import ReactDom from "react-dom";
+
+import "./index.css";
+
+function BookList() {
+  return (
+    <section className="booklist">
+      {books.map((book, index) => {
+        return <Book key={book.id} book={book}></Book>;
+      })}
+    </section>
+  );
+}
+
+const Book = (props) => {
+  const { img, title, author } = props.book;
+
+  return (
+    <article className="book">
+      <img src={img} alt="" />
+      <h1>{title}</h1>
+      <h4>{author}</h4>
+    </article>
+  );
+};
+
+ReactDom.render(<BookList />, document.getElementById("root"));
+```
+
+```javascript
+// Spread Operator
+import React from "react";
+import ReactDom from "react-dom";
+
+import "./index.css";
+
+function BookList() {
+  return (
+    <section className="booklist">
+      {books.map((book, index) => {
+        return <Book key={book.id} {...book}></Book>;
+      })}
+    </section>
+  );
+}
+
+// Version #1
+const Book = (props) => {
+  const { img, title, author } = props;
+
+  return (
+    <article className="book">
+      <img src={img} alt="" />
+      <h1>{title}</h1>
+      <h4>{author}</h4>
+    </article>
+  );
+};
+
+// Version #2
+const Book = ({ img, title, author }) => {
+
+  return (
+    <article className="book">
+      <img src={img} alt="" />
+      <h1>{title}</h1>
+      <h4>{author}</h4>
+    </article>
+  );
+};
+
+ReactDom.render(<BookList />, document.getElementById("root"));
+```
+
+## Event Basics
+- https://reactjs.org/docs/events.html
+```javascript
+import React from "react";
+import ReactDom from "react-dom";
+
+import "./index.css";
+
+const books = [
+  {
+    id: 1,
+    img: "https://images-na.ssl-images-amazon.com/images/I/51SCYAQgu5L._SX315_BO1,204,203,200_.jpg",
+    title: "I Love You to the Moon and Back",
+    author: "Hello WOrld",
+  },
+  {
+    id: 2,
+    img: "https://images-na.ssl-images-amazon.com/images/I/51SCYAQgu5L._SX315_BO1,204,203,200_.jpg",
+    title: "I Love You to the Moon and Back",
+    author: "Hello WOrld",
+  },
+  {
+    id: 3,
+    img: "https://images-na.ssl-images-amazon.com/images/I/51SCYAQgu5L._SX315_BO1,204,203,200_.jpg",
+    title: "I Love You to the Moon and Back",
+    author: "Hello WOrld",
+  },
+];
+
+function BookList() {
+  return (
+    <section className="booklist">
+      {books.map((book, index) => {
+        return <Book key={book.id} {...book}></Book>;
+      })}
+    </section>
+  );
+}
+
+const Book = ({ img, title, author }) => {
+  // attribute, eventHandler
+  // onClick, onMouseOver
+  const clickHandler = (e) => {
+    e.preventDefault();
+    console.log(e);
+    console.log(e.target);
+    alert("Hello World");
+  };
+
+  const complexHandler = (author) => {
+    console.log(author);
+  };
+
+  return (
+    <article
+      className="book"
+      onMouseOver={() => {
+        console.log(author);
+      }}
+    >
+      <img src={img} alt="" />
+      <h1 onClick={() => console.log(title)}>{title}</h1>
+      <h4>{author}</h4>
+      <button type="button" onClick={clickHandler}>
+        Reference Example
+      </button>
+      <button type="button" onClick={() => complexHandler(author)}>
+        More Complex Example
+      </button>
+    </article>
+  );
+};
+
+ReactDom.render(<BookList />, document.getElementById("root"));
+```
+
+## Import and Export Statements
+ES6 Thing, Not React Thing
+
+```javascript
+// src/Book.js
+import React from "react";
+
+const Book = ({ img, title, author }) => {
+  // attribute, eventHandler
+  // onClick, onMouseOver
+  const clickHandler = (e) => {
+    e.preventDefault();
+    console.log(e);
+    console.log(e.target);
+    alert("Hello World");
+  };
+
+  const complexHandler = (author) => {
+    console.log(author);
+  };
+
+  return (
+    <article
+      className="book"
+      onMouseOver={() => {
+        console.log(author);
+      }}
+    >
+      <img src={img} alt="" />
+      <h1 onClick={() => console.log(title)}>{title}</h1>
+      <h4>{author}</h4>
+      <button type="button" onClick={clickHandler}>
+        Reference Example
+      </button>
+      <button type="button" onClick={() => complexHandler(author)}>
+        More Complex Example
+      </button>
+    </article>
+  );
+};
+
+export default Book;
+```
+
+```javascript
+// src/books.js
+export const books = [
+  {
+    id: 1,
+    img: "https://images-na.ssl-images-amazon.com/images/I/51SCYAQgu5L._SX315_BO1,204,203,200_.jpg",
+    title: "I Love You to the Moon and Back",
+    author: "Hello WOrld",
+  },
+  {
+    id: 2,
+    img: "https://images-na.ssl-images-amazon.com/images/I/51SCYAQgu5L._SX315_BO1,204,203,200_.jpg",
+    title: "I Love You to the Moon and Back",
+    author: "Hello WOrld",
+  },
+  {
+    id: 3,
+    img: "https://images-na.ssl-images-amazon.com/images/I/51SCYAQgu5L._SX315_BO1,204,203,200_.jpg",
+    title: "I Love You to the Moon and Back",
+    author: "Hello WOrld",
+  },
+];
+```
+
+```javascript
+// ./testing/testing.js
+export let greeting = "hello world";
+```
+
+```javascript
+// index.js
+import React from "react";
+import ReactDom from "react-dom";
+
+// CSS
+import "./index.css";
+
+// Exactly Same Name
+import { books } from "./books.js";
+// Default Export You can name it anything you want
+// import SpecificBook from "./Book.js"
+import Book from "./Book.js";
+import { greeting } from "./testing/testing.js";
+
+function BookList() {
+  console.log(greeting);
+  return (
+    <section className="booklist">
+      {books.map((book, index) => {
+        return <Book key={book.id} {...book}></Book>;
+      })}
+    </section>
+  );
+}
+
+ReactDom.render(<BookList />, document.getElementById("root"));
+```
